@@ -1,0 +1,28 @@
+name: Build and Push Standard Docker Image
+
+on:
+  workflow_dispatch:
+    #inputs:
+    #  build_version:
+    #    description: 'Caddy version to build (without v prefix, e.g., 2.8.0)'
+    #    required: false
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      caddy_version: "2.11.2"
+      dockerfile: Dockerfile
+      image_title: Caddy Hetzner
+      image_description: Caddy with Hetzner DNS module
+      flavor_latest: "auto"
+      create_release: true
+      build_reason: 'manual'
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      DOCKERHUB_REPOSITORY_NAME: ${{ secrets.DOCKERHUB_REPOSITORY_NAME }}
